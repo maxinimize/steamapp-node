@@ -18,6 +18,6 @@ app.get('/list/', async (req, res) => getGameId(req, res))
 //get a name and id data list of games for a developer or publisher in once
 app.get('/lists/', async (req, res) => getList(req, res))
 
-app.listen(3000, () => {
-	console.log(`app is on port 3000`);
+app.listen(process.env.PORT, () => {
+	console.log(`app is on port ${process.env.PORT}`);
 })
