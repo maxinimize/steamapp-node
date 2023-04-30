@@ -43,7 +43,7 @@ export const getGameId = async (req, res) => {
 				gameData[id] = result.items[j].name
 			}
 		}
-		res.json({ code: 1, gameData })
+		res.json({ code: 1, gameData, totalNum, realTotalNum: Object.keys(gameData).length })
 	} catch (error) {
 		console.log(error)
 		res.json({ code: -1, msg: 'error' })
