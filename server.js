@@ -1,6 +1,6 @@
 import express from 'express'
 import cors from 'cors'
-import { getGameNum, getGameId, getList } from './controllers/steam.js' 
+import { getGameNum, getGameId, getList, getGameDetails } from './controllers/steam.js' 
 
 const app = express()
 
@@ -8,6 +8,9 @@ app.use(express.json())
 app.use(cors())
 
 app.get('/', (req, res) => { res.send('it is working!') })
+
+//get details of games for a given appId
+app.get('/game/', async (req, res) => getGameDetails(req, res))
 
 //get total num of games for a developer or publisher
 app.get('/games/', async (req, res) => getGameNum(req, res))
