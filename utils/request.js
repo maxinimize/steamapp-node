@@ -8,6 +8,9 @@ const service = axios.create({
 })
 
 // service.interceptors.request.use(
+//   request => {
+//     console.log(request)
+//   },
 //   error => {
 //     return Promise.reject(error)
 //   }

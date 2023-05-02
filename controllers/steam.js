@@ -61,7 +61,7 @@ export const getDetails = async (req, res) => {
 
 export const getList = async (req, res) => {
   const { type, name } = req.query
-	let gameData = {}
+	const gameData = {}
 	const params = {
 		category1: 998,
 		infinite: 1,
@@ -71,7 +71,7 @@ export const getList = async (req, res) => {
 	try {
 		// get total number of the company
 		let result = await reqSearch(params)
-		let totalNum = result.total_count
+		const totalNum = result.total_count
 		// get list with page number and fixed page size (100)
 		for (let i = 1; i <= Math.ceil(totalNum / 100); i++) {
 			params.start = (i - 1) * 100
@@ -79,10 +79,10 @@ export const getList = async (req, res) => {
 			const id = result.results_html.match(/(app|bundle|sub)(\/[0-9]*)/g)
 			const name = result.results_html.match(/(?<=<span\s+class="title">).+?(?=<\/span>)/g)
 			//const date = result.results_html.match(/(?<=<div\s+class="col search_released responsive_secondrow">).+?(?=<\/div>)/g)
-			for (let i = 0; i < id.length; i++) {
-				gameData[id[i]] = {
-					name: name[i],
-					//date: date[i]
+			for (let j = 0; j < id.length; j++) {
+				gameData[id[j]] = {
+					name: name[j],
+					//date: date[j]
 				}
 			}
 		}

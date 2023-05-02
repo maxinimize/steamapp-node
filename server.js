@@ -1,6 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import { getList, getDetails } from './controllers/steam.js' 
+import { getDiscountDetails } from './controllers/itad.js' 
 
 const app = express()
 
@@ -20,6 +21,9 @@ app.get('/game/', async (req, res) => getDetails(req, res))
 
 //get a name and id data list of games for a developer or publisher in once
 app.get('/list/', async (req, res) => getList(req, res))
+
+//get a name and id data list of games for a developer or publisher in once
+app.post('/discount/', async (req, res) => getDiscountDetails(req, res))
 
 app.listen(process.env.PORT, () => {
 	console.log(`app is on port ${process.env.PORT}`);

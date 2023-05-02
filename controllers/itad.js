@@ -1,31 +1,31 @@
-import { reqDiscountDetails } from '../api/itad.js' 
+import { reqDiscountDetails } from '../api/itad.js'
+import lodash from 'lodash'
+const { chunk } = lodash
 
 export const getDiscountDetails = async (req, res) => {
-  const { country, shop, allowedShop, ids } = req.query
-	let gameData = {}
+  let { country, shop, allowed, gameData } = req.body
+	const offData = []
+	const ids = chunk(Object.keys(gameData).map(item => encodeURIComponent(item)), 700)
+	// const params = {
+	// 	country,
+	// 	shop,
+	// 	allowed,
+	// 	key: process.env.APIKEY
+	// }
 	try {
-		// get total number of the company
-		let result = await reqGameNum(type, name)
-		let totalNum = result.total_count
-		// get list with page number and fixed page size (100)
-		for (let i = 1; i <= Math.ceil(totalNum / 100); i++) {
-			result = await reqGameId(type, name, i)
-			for (let j = 0; j < result.items.length; j++) {
-				let temp = result.items[j].logo.match(/(apps|bundles|subs).*?(\/[0-9]*)/g)[0].split('s/')
-				let id = temp[0] + '/' + temp[1]
-				if (gameData[id]) {
-					console.log(gameData[id], id, result.items[j].name, i, j, gameData[id] === result.items[j].name)
-				}
-				if (gameData[id] && gameData[id] !== result.items[j].name) {
-					console.log('duplicate id')
-					continue
-				}
-				gameData[id] = result.items[j].name
+		for (let i = 0; i < ids.length; i++) {
+			//params.ids = ids[i].join('%2C')
+			const res = await reqDiscountDetails(country, shop, allowed, ids[i].join('%2C'))
+			//const res = await reqDiscountDetails(params)
+			for (let key in res.data) {
+				res.data[key].id = key
+				res.data[key].name = gameData[key].name
+				offData.push(res.data[key])
 			}
 		}
-		res.json({ code: 1, gameData, totalNum, realTotalNum: Object.keys(gameData).length, })
+		res.json({ code: 1, offData })
 	} catch (error) {
-		console.log(error)
+		//console.error(error)
 		res.json({ code: -1, msg: 'error' })
 	}
 }
