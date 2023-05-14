@@ -5,7 +5,7 @@ const { chunk } = lodash
 export const getDiscountDetails = async (req, res) => {
   let { country, shop, allowed, gameData } = req.body
 	const offData = []
-	const ids = chunk(Object.keys(gameData).map(item => encodeURIComponent(item)), 700)
+	const ids = chunk(Object.keys(gameData), 700)
 	// const params = {
 	// 	country,
 	// 	shop,
@@ -15,7 +15,7 @@ export const getDiscountDetails = async (req, res) => {
 	try {
 		for (let i = 0; i < ids.length; i++) {
 			//params.ids = ids[i].join('%2C')
-			const res = await reqDiscountDetails(country, shop, allowed, ids[i].join('%2C'))
+			const res = await reqDiscountDetails(country, shop, allowed, ids[i].join(','))
 			//const res = await reqDiscountDetails(params)
 			for (let key in res.data) {
 				res.data[key].id = key
